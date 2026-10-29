@@ -8,10 +8,12 @@ const ns = (seconds: string) => String(Math.max(0, Math.round(Number(seconds) * 
 const errorText = (e: unknown) => rawError(e).replace(/^Error: /, '');
 
 async function rpcView<T>(methodName: string, args: Record<string, unknown>): Promise<T> {
-  if (!contractId) throw new Error('Contract ID is not configured yet. Set VITE_CONTRACT_ID to your deployed account.');
   const endpoint = config.nodeUrl;
   const response = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 'launchpad', method: 'query', params: { request_type: 'call_function', account_id: contractId, method_name: methodName, args_base64: btoa(JSON.stringify(args)), finality: 'final' } }) });
-  const payload = await response.json();
+  if (!response.ok) throw new Error(`NEAR RPC returned HTTP ${response.status}`);
+  const raw = await response.text();
+  if (!raw.trim()) throw new Error('NEAR RPC returned an empty response');
+  const payload = JSON.parse(raw);
   if (payload.error) throw new Error(payload.error.data || payload.error.message || 'RPC view failed');
   const bytes: number[] = payload.result.result;
   return JSON.parse(new TextDecoder().decode(new Uint8Array(bytes))) as T;
