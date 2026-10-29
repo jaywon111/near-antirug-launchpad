@@ -1,0 +1,17 @@
+{
+  "name": "near-antirug-launchpad",
+  "version": "1.0.0",
+  "description": "Rust + `near-sdk` contract scaffold and React + TypeScript + Vite frontend, following `hackathon-plans/antirug-launchpad-plan.md`. Testnet-only. This is an unimplemented scaffold, not a deployed or audited launchpad. No claim that every rug vector is prevented.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethers": "^6.17.0",
+    "near-api-js": "^2.1.4",
+    "near-sandbox": "^0.2.1"
+  }
+}
